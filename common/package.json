@@ -1,19 +1,19 @@
 {
-  "name": "jisho-open-common",
-  "version": "0.1.0",
-  "description": "",
-  "author": "hlorenzi",
-  "type": "module",
-  "scripts": {
-    "test-furi": "ts-node ./src/furigana.test.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "exports": {
-    "./*": "./src/*"
-  },
-  "license": "",
-  "dependencies": {
-    "@types/assert": "^1.5.8",
-    "assert": "^2.1.0"
-  }
+	"name": "subspaced-common",
+	"version": "0.1.0",
+	"description": "",
+	"author": "SJ Triffon",
+	"type": "module",
+	"scripts": {
+		"test-furi": "ts-node ./src/furigana.test.ts",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"exports": {
+		"./*": "./src/*"
+	},
+	"license": "",
+	"dependencies": {
+		"@types/assert": "^1.5.8",
+		"assert": "^2.1.0"
+	}
 }

@@ -1,8 +1,8 @@
 {
-	"name": "jisho-open-frontend",
+	"name": "subspaced-main",
 	"version": "0.1.0",
 	"description": "",
-	"author": "hlorenzi",
+	"author": "SJ Triffon",
 	"type": "module",
 	"scripts": {
 		"build": "webpack --config webpack.config.cjs",
