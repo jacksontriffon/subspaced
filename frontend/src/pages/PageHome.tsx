@@ -1,34 +1,32 @@
-import * as Solid from "solid-js"
-import { styled } from "solid-styled-components"
-import * as Framework from "../framework/index.ts"
-import * as App from "../app.tsx"
-import { Page } from "../components/Page.tsx"
-import { Searchbox } from "../components/Searchbox.tsx"
-import { AnalyticsBox } from "../components/AnalyticsBox.tsx"
+import * as Solid from "solid-js";
+import { styled } from "solid-styled-components";
+import * as Framework from "../framework/index.ts";
+import * as App from "../app.tsx";
+import { Page } from "../components/Page.tsx";
+import { Searchbox } from "../components/Searchbox.tsx";
+import { AnalyticsBox } from "../components/AnalyticsBox.tsx";
 
+export function PageHome(props: Framework.RouteProps) {
+	const examples = [
+		["English search", '"begin"'],
+		["Japanese search", "召し上がる"],
+		["Rōmaji search", "kantoku"],
+		["Partial search", "??直*"],
+		["Filter search", "#common #v5b #!vt"],
+		["Name search", "eiji #name"],
+		["Kanji look-up", "国連安保理 #k"],
+		["Kanji search by reading", "na mei #k"],
+		["Kanji search by meaning", '"power" #k'],
+		["Kanji search by components", "冂虫 #c"],
+		["Inflection breakdown", "食べちゃった"],
+		["Sentence analysis", "毎日私は学校に鉛筆を持っていきますよ。"],
+	];
 
-export function PageHome(props: Framework.RouteProps)
-{
-    const examples = [
-        ["English search", "\"begin\""],
-        ["Japanese search", "召し上がる"],
-        ["Rōmaji search", "kantoku"],
-        ["Partial search", "??直*"],
-        ["Filter search", "#common #v5b #!vt"],
-        ["Name search", "eiji #name"],
-        ["Kanji look-up", "国連安保理 #k"],
-        ["Kanji search by reading", "na mei #k"],
-        ["Kanji search by meaning", "\"power\" #k"],
-        ["Kanji search by components", "冂虫 #c"],
-        ["Inflection breakdown", "食べちゃった"],
-        ["Sentence analysis", "毎日私は学校に鉛筆を持っていきますよ。"],
-    ]
-
-    return <Page>
-
-        <Searchbox position="inline"/>
-        <br/>
-
+	return (
+		<Page>
+			{/* <Searchbox position="inline" /> */}
+			{/* <br /> */}
+			{/* 
         <CardList>
             <CardSlot>
                 <HighlightAndBold>Lorenzi's Jisho</HighlightAndBold> is
@@ -112,41 +110,37 @@ export function PageHome(props: Framework.RouteProps)
                     </Solid.For>
                 </ul>
             </CardSlot>
-        </CardList>
-    </Page>
+        </CardList> */}
+		</Page>
+	);
 }
 
-
 const CardList = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-`
-
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+`;
 
 const Highlight = styled.span`
-    color: ${ Framework.themeVar("textColor") };
-`
-
+	color: ${Framework.themeVar("textColor")};
+`;
 
 const HighlightAndBold = styled.span`
-    font-weight: bold;
-    color: ${ Framework.themeVar("textColor") };
-`
-
+	font-weight: bold;
+	color: ${Framework.themeVar("textColor")};
+`;
 
 const CardSlot = styled.div`
-    display: inline-block;
-    flex-grow: 1;
-    flex-basis: 50em;
-    margin: 0.25em;
-    color: ${ Framework.themeVar("text2ndColor") };
-    background-color: ${ Framework.themeVar("textStrongBkgColor") };
-    border-radius: ${ Framework.themeVar("borderRadius") };
-    padding: 1em;
-`
-
+	display: inline-block;
+	flex-grow: 1;
+	flex-basis: 50em;
+	margin: 0.25em;
+	color: ${Framework.themeVar("text2ndColor")};
+	background-color: ${Framework.themeVar("textStrongBkgColor")};
+	border-radius: ${Framework.themeVar("borderRadius")};
+	padding: 1em;
+`;
 
 const ExampleLink = styled.li`
-    margin-bottom: 0.25em;
-`
+	margin-bottom: 0.25em;
+`;

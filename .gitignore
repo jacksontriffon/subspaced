@@ -3,3 +3,8 @@ node_modules/
 /backend/furigana_analysis.txt
 /backend/furigana.txt
 /frontend/.build/
+*.webm
+*.mp4
+*.tres
+*.srt
+*.json
