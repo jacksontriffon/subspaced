@@ -16,6 +16,7 @@ import * as ServerSearch from "./src/server/search.ts";
 import * as ServerKanjiWords from "./src/server/kanji_words.ts";
 import * as ServerKanjiByComponents from "./src/server/kanji_by_components.ts";
 import * as ServerStudylist from "./src/server/studylist.ts";
+import * as ServerVideo from "./src/server/video.ts";
 
 const port = process.env.PORT || 80;
 
@@ -71,6 +72,7 @@ ServerSearch.init(app, db);
 ServerKanjiWords.init(app, db);
 ServerKanjiByComponents.init(app, db);
 ServerStudylist.init(app, db, auth);
+ServerVideo.init(app);
 
 Importing.setupScheduledDatabaseBuild(db);
 
