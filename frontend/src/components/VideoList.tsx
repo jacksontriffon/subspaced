@@ -2,52 +2,111 @@ import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { VideoDetails } from "common/api/video.js";
+import {
+	allVideos,
+	currentVideo,
+	setAllVideos,
+	setCurrentVideo,
+} from "../global/videoState.ts";
 
-export function VideoList() {
-	const [videos, setVideos] = Solid.createSignal<VideoDetails[]>([]);
+export function VideoListSelect() {
+	const [currentVideoIndex, setCurrentVideoIndex] =
+		Solid.createSignal<number>(0);
 
+	const [loading, setLoading] = Solid.createSignal<boolean>(true);
 	Solid.createEffect(() => {
-		fetch("/videos")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`Error! Status: ${response.status}`);
-				}
-				return response.json(); // Parse as JSON
+		Framework.getAllVideos()
+			.then((value) => {
+				setAllVideos(value);
+				setLoading(false);
 			})
-			.then((data) => {
-				setVideos(data);
-			})
-			.catch((error) => console.error("Error fetching videos:", error));
+			.catch((err) => {
+				console.error(err);
+				setLoading(false);
+			});
 	});
+
+	const updateCurrentVideo = (newVideo: VideoDetails) => {
+		setCurrentVideo(newVideo);
+	};
 
 	return (
 		<ListContainer>
-			{videos().length > 0 ? (
-				videos().map((video, index) => (
-					<ListItem>
-						<VideoCover src={video.cover} alt={video.name} />
-						<Framework.Link label={video.name} />
-					</ListItem>
-				))
+			{loading() ? (
+				<Center>
+					<p>Loading...</p>
+				</Center>
+			) : allVideos().length > 0 ? (
+				allVideos().map((video, index) => {
+					let isChecked = index === currentVideoIndex();
+					return (
+						<ListItem>
+							<RadioWrapper>
+								<HiddenRadioInput
+									type="radio"
+									name="video-list"
+									value={index}
+									checked={isChecked}
+									onChange={() =>
+										setCurrentVideoIndex((prevIndex) => {
+											const isNewSelection =
+												prevIndex !== index;
+											if (isNewSelection) {
+												updateCurrentVideo(video);
+											}
+											return index;
+										})
+									}
+								/>
+								<Framework.VideoCover
+									isChecked={isChecked}
+									src={video.cover}
+									alt={video.name}
+								/>
+							</RadioWrapper>
+						</ListItem>
+					);
+				})
 			) : (
-				<p>No videos found.</p>
+				<Center>
+					<p>No videos found.</p>
+				</Center>
 			)}
 		</ListContainer>
 	);
 }
 
+const Center = styled.p`
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
 const ListContainer = styled.ul`
-	padding: 40px;
+	margin-top: 24px;
+	padding: 0px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
 `;
 
 const ListItem = styled.li`
 	display: flex;
-	margin: 24px 0px;
 	gap: 16px;
 	align-items: center;
 `;
 
-const VideoCover = styled.img`
-	max-width: 200px;
-	max-height: 100px;
+const RadioWrapper = styled.label`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: pointer;
+`;
+
+const HiddenRadioInput = styled.input`
+	display: none;
 `;
