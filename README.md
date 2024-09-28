@@ -30,3 +30,5 @@ To work on the codebase, execute in parallel:
 -   In `frontend/`, execute `npm run dev` to build and pack the frontend JavaScript files in watch mode.
 
 -   Finally, you can access the page through `http://127.0.0.1`.
+
+Shortcut to run everything is in `.vscode/tasks.json` - Use Ctrl+Shift+P and type `Tasks: Run Task` and select `Run All`.

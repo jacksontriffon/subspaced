@@ -1,0 +1,38 @@
+{
+	"name": "subspaced-backend",
+	"version": "0.1.0",
+	"description": "",
+	"author": "SJ Triffon",
+	"type": "module",
+	"scripts": {
+		"start": "tsx ./serve.ts -- --db-mongo --auth-lorenzi",
+		"dev": "tsx watch ./serve.ts",
+		"dev-dummy": "tsx ./serve.ts -- --db-dummy --auth-dummy",
+		"dev-auth-lorenzi": "tsx ./serve.ts -- --auth-lorenzi-dev",
+		"db-build": "tsx ./src/tools/db_build.ts",
+		"migrate": "tsx ./src/tools/migrate.ts",
+		"normalize-furi": "tsx ./src/tools/normalize_furigana_readings.ts",
+		"analyze-furi": "tsx ./src/tools/analyze_furigana.ts",
+		"test-inflections": "tsx ./test_inflections.ts",
+		"test-search": "tsx ./src/server/search.test.ts",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"license": "",
+	"dependencies": {
+		"@types/express": "^4.17.21",
+		"body-parser": "^1.20.2",
+		"common": "file://../common/",
+		"compression": "^1.7.4",
+		"cookie-parser": "^1.4.6",
+		"express": "^4.19.2",
+		"express-async-errors": "^3.1.1",
+		"gunzip-file": "^0.1.1",
+		"kuromoji": "^0.1.2",
+		"mongodb": "^6.8.0",
+		"node-fetch": "^3.3.2",
+		"raw-loader": "^4.0.2",
+		"tsx": "^4.19.0",
+		"typescript": "^5.5.4",
+		"xml2js": "^0.6.2"
+	}
+}
