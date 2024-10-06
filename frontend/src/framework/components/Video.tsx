@@ -4,7 +4,7 @@ import * as Framework from "../index.ts";
 
 export function Video(props: {
 	style?: Solid.JSX.CSSProperties;
-	ref?: Solid.Setter<HTMLVideoElement>;
+	ref?: HTMLVideoElement;
 	src: string;
 }) {
 	return (
