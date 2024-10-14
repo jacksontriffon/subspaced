@@ -8,14 +8,14 @@ import { videoIndex } from "./VideoPlayer.tsx";
 export function Subtitles() {
 	const subtitles = () => currentVideo()?.clips[videoIndex()].subtitles;
 
-	return (
-		<HeadingText>
-			{currentVideo()?.clips[videoIndex()].subtitles}
-		</HeadingText>
-	);
+	return <HeadingText>{subtitles()}</HeadingText>;
 }
 
 const HeadingText = styled.span`
 	font-weight: ${App.cssVarJapaneseFontWeight};
-	font-size: ${App.cssVarWordHeadingFontSize};
+	font-size: 1.5rem;
+	position: absolute;
+	bottom: 8px;
+	outline: 1px solid black;
+	background-color: rgba(0, 0, 0, 0.7);
 `;

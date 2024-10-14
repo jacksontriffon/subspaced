@@ -22,7 +22,6 @@ export function VideoPlayer(props: {
 	let videoRef: HTMLVideoElement | undefined;
 
 	const triggerNextVideo = () => {
-		console.log(videoIndex());
 		if (videoIndex() === max_clips - 1) {
 			setVideoIndex(0);
 		} else {
@@ -39,7 +38,6 @@ export function VideoPlayer(props: {
 		const isNewVideo = currentPath !== currentVideo()?.name;
 		if (isNewVideo) {
 			currentPath = currentVideo()?.name;
-			console.log("new video");
 			setVideoIndex(first_clip_index);
 		}
 
@@ -58,15 +56,23 @@ export function VideoPlayer(props: {
 	return (
 		<>
 			{currentVideo()?.clips.length && (
-				<>
+				<VideoPlayerContainer>
 					<Framework.Video
 						ref={videoRef}
 						src={currentVideo()?.clips[0].videoPath}
 						loop={false}
 					/>
 					<Subtitles />
-				</>
+				</VideoPlayerContainer>
 			)}
 		</>
 	);
 }
+
+const VideoPlayerContainer = styled.div`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
