@@ -1,18 +1,15 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./src/",
-        "jsx": "preserve",
-        "jsxImportSource": "solid-js",
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "target": "es2022",
-        "allowImportingTsExtensions": true,
-        "noEmit": true,
-        "strictNullChecks": true,
-        "noImplicitAny": true
-    },
-    "include": [
-        "./src/*.ts",
-        "./src/*.tsx",
-    ]
+	"compilerOptions": {
+		"baseUrl": "./src/",
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"target": "es2022",
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"strictNullChecks": true,
+		"noImplicitAny": true
+	},
+	"include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

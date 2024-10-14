@@ -2,11 +2,12 @@ import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../index.ts";
 
-export function Video(props: {
-	style?: Solid.JSX.CSSProperties;
-	ref?: HTMLVideoElement;
-	src: string;
-}) {
+export function Video(
+	props: {
+		style?: Solid.JSX.CSSProperties;
+	} & Solid.ComponentProps<"video">,
+) {
+	const { style, ...videoProps } = props;
 	return (
 		<StyledVideo
 			autoplay
@@ -14,7 +15,7 @@ export function Video(props: {
 			loop
 			muted
 			style={props.style}
-			ref={props.ref}
+			{...videoProps}
 		>
 			<source src={props.src}></source>
 		</StyledVideo>
