@@ -5,6 +5,7 @@ import { currentVideo } from "../global/videoState.ts";
 import { Subtitles } from "./Subtitles.tsx";
 
 export const [videoIndex, setVideoIndex] = Solid.createSignal(0);
+export const [lastClipIndex, setLastClipIndex] = Solid.createSignal(1);
 
 export function VideoPlayer(props: {
 	randomise_clips?: boolean;
@@ -13,20 +14,34 @@ export function VideoPlayer(props: {
 	max_clips?: number;
 }) {
 	const {
-		randomise_clips = true,
+		randomise_clips = false,
 		show_subtitles = true,
 		max_clips = 5,
 		first_clip_index = 0,
 	} = props;
-
 	let videoRef: HTMLVideoElement | undefined;
 
 	const triggerNextVideo = () => {
-		if (videoIndex() === max_clips - 1) {
+		if (randomise_clips) {
+			playRandomClip();
+		} else {
+			playNextClip();
+		}
+	};
+	const playNextClip = () => {
+		if (videoIndex() === lastClipIndex()) {
 			setVideoIndex(0);
 		} else {
-			setVideoIndex(videoIndex() + 1);
+			setVideoIndex((prevIndex) => prevIndex + 1);
 		}
+	};
+	const playRandomClip = () => {
+		let rand_index = Math.floor(Math.random() * lastClipIndex());
+		while (rand_index === lastClipIndex()) {
+			rand_index = Math.floor(Math.random() * lastClipIndex());
+		}
+		console.log(rand_index);
+		setVideoIndex(rand_index);
 	};
 
 	let currentPath = currentVideo()?.name;
@@ -51,8 +66,14 @@ export function VideoPlayer(props: {
 			});
 			videoRef.load();
 		}
+
+		const total_clips = currentVideo()?.clips.length ?? max_clips;
+		if (currentVideo()?.clips.length) {
+			setLastClipIndex(total_clips);
+		}
 	});
 
+	// TODO: Click anywhere to play overlay (before user interacts with the page)
 	return (
 		<>
 			{currentVideo()?.clips.length && (
@@ -60,9 +81,10 @@ export function VideoPlayer(props: {
 					<Framework.Video
 						ref={videoRef}
 						src={currentVideo()?.clips[0].videoPath}
-						loop={false}
+						loop={max_clips === 1}
+						autoplay
 					/>
-					<Subtitles />
+					{show_subtitles && <Subtitles />}
 				</VideoPlayerContainer>
 			)}
 		</>

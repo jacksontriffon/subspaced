@@ -7,6 +7,7 @@ import { EntryWord } from "../components/EntryWord.tsx";
 import { EntryKanji } from "../components/EntryKanji.tsx";
 import { EntrySentence } from "../components/EntrySentence.tsx";
 import { NextButton } from "../components/NextButton.tsx";
+import { VideoPlayer } from "../components/VideoPlayer.tsx";
 
 const limitStart = 10;
 const limitIncrease = 20;
@@ -27,8 +28,7 @@ export function PageSearch(props: Framework.RouteProps) {
 	return (
 		<Page title={query()} searchQuery={query()}>
 			<MarginBottom />
-			<Framework.Video src="http://localhost:80/videos/videos/AttackOnTItan-s01-e01/clips/00_04_10.817_00_04_12.552/clip_00_04_10.817_00_04_12.552.webm" />
-
+			<VideoPlayer max_clips={1} />
 			<NextButton />
 			{/* <Searchbox initialText={query()} position="inline" /> */}
 			<MarginBottom />

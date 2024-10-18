@@ -9,7 +9,7 @@ export function Video(
 ) {
 	const { style, ...videoProps } = props;
 	return (
-		<StyledVideo autoplay loop muted style={props.style} {...videoProps}>
+		<StyledVideo autoplay loop style={props.style} {...videoProps}>
 			<source src={props.src}></source>
 		</StyledVideo>
 	);

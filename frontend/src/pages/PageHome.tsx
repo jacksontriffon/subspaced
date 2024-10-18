@@ -12,7 +12,7 @@ import { VideoPlayer } from "../components/VideoPlayer.tsx";
 export function PageHome(props: Framework.RouteProps) {
 	return (
 		<Page>
-			<VideoPlayer />
+			<VideoPlayer max_clips={0} randomise_clips={true} />
 			<VideoSelected />
 			<VideoListSelect />
 		</Page>

@@ -22,7 +22,12 @@ export function VideoSelected() {
 							<h3>{currentVideo()?.name}</h3>
 							<p>Progress 23%</p>
 						</div>
-						<Framework.Button title="Start Learning">
+						<Framework.Button
+							title="Start Learning"
+							href={`search/${
+								currentVideo()?.clips[0].subtitles
+							}`}
+						>
 							Start Learning
 						</Framework.Button>
 					</div>

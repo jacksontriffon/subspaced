@@ -14,6 +14,7 @@ export function Subtitles() {
 const HeadingText = styled.span`
 	font-weight: ${App.cssVarJapaneseFontWeight};
 	font-size: 1.5rem;
+	text-align: center;
 	position: absolute;
 	bottom: 8px;
 	outline: 1px solid black;
