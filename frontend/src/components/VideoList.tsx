@@ -26,8 +26,18 @@ export function VideoListSelect() {
 			});
 	});
 
-	const updateCurrentVideo = (newVideo: VideoDetails) => {
-		setCurrentVideo(newVideo);
+	const updateCurrentVideo = (
+		newVideo: VideoDetails,
+		randomiseDefaultClipIndex: boolean = true,
+	) => {
+		if (randomiseDefaultClipIndex) {
+			setCurrentVideo({
+				...newVideo,
+				currentClipIndex: Framework.randomIndex(newVideo.clips),
+			});
+		} else {
+			setCurrentVideo(newVideo);
+		}
 	};
 
 	return (

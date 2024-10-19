@@ -50,6 +50,7 @@ export function VideoPlayer(props: {
 			);
 		}
 	};
+
 	const playRandomClip = () => {
 		let rand_index = Math.floor(Math.random() * lastClipIndex());
 		while (rand_index === lastClipIndex()) {

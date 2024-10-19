@@ -22,6 +22,15 @@ export function NextButton() {
 	const newSubtitles = () =>
 		currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0].subtitles;
 
+	const goToNextClip = () => {
+		const inASubPage = window.location.href.split("/").length > 3;
+		if (inASubPage) {
+			window.location.pathname = "/search/" + newSubtitles();
+		} else {
+			window.location.replace(newSubtitles() ?? "");
+		}
+	};
+
 	return (
 		<CtaContainer>
 			<Framework.ButtonFloating
@@ -34,7 +43,7 @@ export function NextButton() {
 				}}
 				onClick={() => {
 					incrementCurrentVideo();
-					window.location.replace(newSubtitles() ?? "");
+					goToNextClip();
 				}}
 			/>
 		</CtaContainer>

@@ -25,7 +25,9 @@ export function VideoSelected() {
 						<Framework.Button
 							title="Start Learning"
 							href={`search/${
-								currentVideo()?.clips[0].subtitles
+								currentVideo()?.clips[
+									currentVideo()?.currentClipIndex ?? 0
+								].subtitles
 							}`}
 						>
 							Start Learning
