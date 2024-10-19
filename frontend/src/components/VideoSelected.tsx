@@ -39,7 +39,7 @@ export function VideoSelected() {
 
 const setDefaultVideo = () => {
 	Solid.createEffect(() => {
-		if (allVideos() && !currentVideo()) {
+		if (allVideos()) {
 			const firstVideo = allVideos()[0];
 			setCurrentVideo(firstVideo);
 		}

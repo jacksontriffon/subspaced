@@ -3,10 +3,10 @@ import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { currentVideo } from "../global/videoState.ts";
 import * as App from "../app.tsx";
-import { videoIndex } from "./VideoPlayer.tsx";
 
 export function Subtitles() {
-	const subtitles = () => currentVideo()?.clips[videoIndex()].subtitles;
+	const subtitles = () =>
+		currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0].subtitles;
 
 	return <HeadingText>{subtitles()}</HeadingText>;
 }

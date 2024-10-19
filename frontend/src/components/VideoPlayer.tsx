@@ -1,10 +1,9 @@
 import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
-import { currentVideo } from "../global/videoState.ts";
+import { currentVideo, setCurrentVideo } from "../global/videoState.ts";
 import { Subtitles } from "./Subtitles.tsx";
 
-export const [videoIndex, setVideoIndex] = Solid.createSignal(0);
 export const [lastClipIndex, setLastClipIndex] = Solid.createSignal(1);
 
 export function VideoPlayer(props: {
@@ -21,6 +20,16 @@ export function VideoPlayer(props: {
 	} = props;
 	let videoRef: HTMLVideoElement | undefined;
 
+	const setClipIndex = (newClipIndex: number) => {
+		setCurrentVideo(
+			(prev) =>
+				prev && {
+					...prev,
+					currentClipIndex: newClipIndex,
+				},
+		);
+	};
+
 	const triggerNextVideo = () => {
 		if (randomise_clips) {
 			playRandomClip();
@@ -29,10 +38,16 @@ export function VideoPlayer(props: {
 		}
 	};
 	const playNextClip = () => {
-		if (videoIndex() === lastClipIndex()) {
-			setVideoIndex(0);
+		if (currentVideo()?.currentClipIndex === lastClipIndex()) {
+			setClipIndex(0);
 		} else {
-			setVideoIndex((prevIndex) => prevIndex + 1);
+			setCurrentVideo(
+				(prev) =>
+					prev && {
+						...prev,
+						currentClipIndex: prev.currentClipIndex + 1,
+					},
+			);
 		}
 	};
 	const playRandomClip = () => {
@@ -40,20 +55,21 @@ export function VideoPlayer(props: {
 		while (rand_index === lastClipIndex()) {
 			rand_index = Math.floor(Math.random() * lastClipIndex());
 		}
-		console.log(rand_index);
-		setVideoIndex(rand_index);
+		setClipIndex(rand_index);
 	};
 
 	let currentPath = currentVideo()?.name;
 	// Load new video side effect
 	Solid.createEffect(() => {
 		// DON'T REMOVE: This unused variable triggers this Effect when it changes
-		const new_video_path = currentVideo()?.clips[videoIndex()].videoPath;
+		const new_video_path =
+			currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0]
+				.videoPath;
 
 		const isNewVideo = currentPath !== currentVideo()?.name;
 		if (isNewVideo) {
 			currentPath = currentVideo()?.name;
-			setVideoIndex(first_clip_index);
+			setClipIndex(first_clip_index);
 		}
 
 		if (videoRef) {
@@ -80,7 +96,11 @@ export function VideoPlayer(props: {
 				<VideoPlayerContainer>
 					<Framework.Video
 						ref={videoRef}
-						src={currentVideo()?.clips[0].videoPath}
+						src={
+							currentVideo()?.clips[
+								currentVideo()?.currentClipIndex ?? 0
+							].videoPath
+						}
 						loop={max_clips === 1}
 						autoplay
 					/>

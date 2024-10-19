@@ -2,6 +2,7 @@ export interface VideoDetails {
 	name: string;
 	cover: string;
 	clips: ClipDetails[];
+	currentClipIndex: number;
 }
 
 export interface ClipDetails {

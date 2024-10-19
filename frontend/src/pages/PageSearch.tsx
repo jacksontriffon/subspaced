@@ -28,7 +28,7 @@ export function PageSearch(props: Framework.RouteProps) {
 	return (
 		<Page title={query()} searchQuery={query()}>
 			<MarginBottom />
-			<VideoPlayer max_clips={1} />
+			<VideoPlayer max_clips={1} show_subtitles={false} />
 			<NextButton />
 			{/* <Searchbox initialText={query()} position="inline" /> */}
 			<MarginBottom />
