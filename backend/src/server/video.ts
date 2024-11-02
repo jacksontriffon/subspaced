@@ -140,7 +140,7 @@ const getClipVideoPath = (
 	clipName: string,
 ): string => {
 	const baseUrl = `${req.protocol}://${req.get("host")}`;
-	const fullUrl = `${baseUrl}/videos/videos/${videoName}/clips/${clipName}/clip_${clipName}.webm`;
+	const fullUrl = `${baseUrl}/videos/${videoName}/clips/${clipName}/clip_${clipName}.webm`;
 	return fullUrl;
 };
 
