@@ -5,7 +5,7 @@ import * as path from "path";
 
 export function init(app: Express.Application) {
 	app.get("/videos", async (req, res) => {
-		const directoryPath = "../frontend/public/videos/videos";
+		const directoryPath = "../frontend/public/videos";
 
 		try {
 			const videoNames: string[] = await fs.readdir(directoryPath);
