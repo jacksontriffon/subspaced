@@ -131,6 +131,8 @@ const getClipDetails = async (
 		subtitles: clipDetails.subtitles,
 		videoName: clipDetails.name,
 		videoPath: clipVideoPath,
+		translation: clipDetails.translation,
+		incorrect_translations: clipDetails.incorrect_translations,
 	};
 };
 

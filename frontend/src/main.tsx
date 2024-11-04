@@ -17,6 +17,7 @@ function Root() {
 	Framework.pwaEnable();
 	// Framework.Analytics.init("G-PY955GS729")
 
+	// Update current video with localStorage
 	Solid.createEffect(() => {
 		if (currentVideo() === null) {
 			loadCurrentVideoFromStorage();

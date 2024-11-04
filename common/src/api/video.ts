@@ -9,4 +9,6 @@ export interface ClipDetails {
 	videoName: string;
 	videoPath: string;
 	subtitles: string;
+	translation: string;
+	incorrect_translations: string[];
 }
