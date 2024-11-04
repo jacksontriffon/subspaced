@@ -7,6 +7,7 @@ from pathlib import Path
 
 load_dotenv(find_dotenv())
 openai.api_key = os.environ.get("OPENAI_API_KEY")
+client = openai.OpenAI()
 
 
 def is_valid_json(json_str):
@@ -33,7 +34,7 @@ def get_translation_question(japanese_text: str) -> dict:
 
     print("Translating with ChatGPT:", japanese_text)
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -65,7 +66,7 @@ def get_translation_question(japanese_text: str) -> dict:
     return json_content
 
 
-def update_json_file(file_path: Path, call_count: int, max_calls: int):
+def update_json_file(file_path: Path, call_count: int, max_calls: int, overwrite: bool):
     if call_count >= max_calls:
         print(
             f"Reached the maximum API call limit of {max_calls}. Skipping further calls."
@@ -75,6 +76,10 @@ def update_json_file(file_path: Path, call_count: int, max_calls: int):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
+
+        if "translation" in data and not overwrite:
+            print(f"Skipping {file_path} (already contains 'translation').")
+            return call_count
 
         japanese_text = data.get("subtitles", "")
         if not japanese_text:
@@ -114,6 +119,11 @@ def main():
         default=1000,
         help="Maximum number of API calls to make.",
     )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite existing translations if present.",
+    )
     args = parser.parse_args()
 
     root_path = Path(args.path)
@@ -131,7 +141,9 @@ def main():
     )
     call_count = 0
     for json_file in json_files:
-        call_count = update_json_file(json_file, call_count, args.max_calls)
+        call_count = update_json_file(
+            json_file, call_count, args.max_calls, args.overwrite
+        )
         if call_count >= args.max_calls:
             break
 
