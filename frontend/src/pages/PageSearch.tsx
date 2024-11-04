@@ -7,6 +7,7 @@ import { EntryWord } from "../components/EntryWord.tsx";
 import { EntryKanji } from "../components/EntryKanji.tsx";
 import { EntrySentence } from "../components/EntrySentence.tsx";
 import { NextButton } from "../components/NextButton.tsx";
+import { QuizButton } from "../components/QuizButton.tsx";
 import { VideoPlayer } from "../components/VideoPlayer.tsx";
 
 const limitStart = 10;
@@ -28,10 +29,10 @@ export function PageSearch(props: Framework.RouteProps) {
 	return (
 		<Page title={query()} searchQuery={query()}>
 			<MarginBottom />
-			<VideoPlayer max_clips={1} show_subtitles={false} />
 			<NextButton />
 			{/* <Searchbox initialText={query()} position="inline" /> */}
 			<MarginBottom />
+			<QuizButton />
 
 			<SearchResults query={query} tokenIndex={tokenIndex} />
 		</Page>
@@ -115,6 +116,11 @@ function SearchResults(props: {
 							</Solid.Match>
 
 							<Solid.Match when={result.type === "sentence"}>
+								<VideoPlayer
+									max_clips={1}
+									show_subtitles={false}
+								/>
+
 								<EntrySentence
 									entry={
 										result as App.Api.Search.SentenceAnalysis

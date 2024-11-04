@@ -8,47 +8,42 @@ const getCurrentClip = (): ClipDetails | null => {
 	return currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0] ?? null;
 };
 
-const incrementCurrentVideo = () => {
-	setCurrentVideo(
-		(prev) =>
-			prev && {
-				...prev,
-				currentClipIndex: prev.currentClipIndex + 1,
-			},
-	);
-};
-
-export function NextButton() {
-	const newSubtitles = () =>
-		currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0].subtitles;
-
-	const goToNextClip = () => {
-		const inASubPage = window.location.href.split("/").length > 3;
-		if (inASubPage) {
-			window.location.pathname = "/search/" + newSubtitles();
-		} else {
-			window.location.replace(newSubtitles() ?? "");
-		}
-	};
-
+export function QuizButton() {
 	return (
 		<CtaContainer>
+			{/* <Link href="/quiz">QUIZ</Link> */}
 			<Framework.ButtonFloating
-				label="NEXT"
+				label="QUIZ"
 				style={{
 					width: "100%",
 					"max-width": "300px",
 					"margin-right": "24px",
 					"border-radius": "4px",
+					background: "#1D99FF",
 				}}
-				onClick={() => {
-					incrementCurrentVideo();
-					goToNextClip();
-				}}
+				href="/quiz"
 			/>
 		</CtaContainer>
 	);
 }
+
+const Link = styled.a`
+	width: 100%;
+	text-align: center;
+	max-width: 300px;
+	margin-right: 24px;
+	border-radius: 4px;
+	padding: 16px;
+	text-decoration: none;
+	color: white;
+	background: linear-gradient(
+			241deg,
+			#000 19.88%,
+			rgba(29, 153, 255, 0.2) 81.96%
+		),
+		#000;
+	border: 1px solid #1d99ff;
+`;
 
 const CtaContainer = styled.div`
 	position: fixed;
@@ -57,7 +52,7 @@ const CtaContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: end;
-	padding-bottom: 120px;
+	padding-bottom: 40px;
 	top: 0;
 	z-index: 2;
 	pointer-events: none;

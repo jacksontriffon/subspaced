@@ -123,6 +123,12 @@ function Root() {
 					},
 
 					{
+						patterns: [Pages.Quiz.url],
+						load: async () =>
+							(await import("./pages/PageQuiz.tsx")).PageQuiz,
+					},
+
+					{
 						patterns: ["*"],
 						load: async () => () =>
 							<Framework.Error message="Page not found" />,
