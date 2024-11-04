@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 
 load_dotenv(find_dotenv())
-client = openai.OpenAI()
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
@@ -34,7 +33,7 @@ def get_translation_question(japanese_text: str) -> dict:
 
     print("Translating with ChatGPT:", japanese_text)
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -66,7 +65,13 @@ def get_translation_question(japanese_text: str) -> dict:
     return json_content
 
 
-def update_json_file(file_path: Path):
+def update_json_file(file_path: Path, call_count: int, max_calls: int):
+    if call_count >= max_calls:
+        print(
+            f"Reached the maximum API call limit of {max_calls}. Skipping further calls."
+        )
+        return call_count
+
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -74,12 +79,12 @@ def update_json_file(file_path: Path):
         japanese_text = data.get("subtitles", "")
         if not japanese_text:
             print(f"No 'subtitles' field found in {file_path}. Skipping...")
-            return
+            return call_count
 
         translation_data = get_translation_question(japanese_text)
         if not translation_data:
             print(f"Failed to get translation for {file_path}. Skipping...")
-            return
+            return call_count
 
         data.update(translation_data)
 
@@ -87,9 +92,11 @@ def update_json_file(file_path: Path):
             json.dump(data, f, ensure_ascii=False, indent=4)
 
         print(f"Updated {file_path} successfully.")
+        return call_count + 1
 
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
+        return call_count
 
 
 def main():
@@ -100,6 +107,12 @@ def main():
         "--path",
         required=True,
         help="Path to the root directory containing JSON files.",
+    )
+    parser.add_argument(
+        "--max-calls",
+        type=int,
+        default=1000,
+        help="Maximum number of API calls to make.",
     )
     args = parser.parse_args()
 
@@ -113,9 +126,14 @@ def main():
         print("No JSON files found.")
         return
 
-    print(f"Found {len(json_files)} JSON files. Starting processing...")
+    print(
+        f"Found {len(json_files)} JSON files. Starting processing with a limit of {args.max_calls} API calls..."
+    )
+    call_count = 0
     for json_file in json_files:
-        update_json_file(json_file)
+        call_count = update_json_file(json_file, call_count, args.max_calls)
+        if call_count >= args.max_calls:
+            break
 
 
 if __name__ == "__main__":
