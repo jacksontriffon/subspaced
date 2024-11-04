@@ -3,6 +3,7 @@ import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { Page } from "../components/Page.tsx";
 import { VideoPlayer } from "../components/VideoPlayer.tsx";
+import { Quiz } from "../components/Quiz.tsx";
 
 export function PageQuiz(props: Framework.RouteProps) {
 	return (
