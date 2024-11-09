@@ -17,6 +17,7 @@ export * from "./components/ButtonFloating.tsx";
 export * from "./components/ButtonPopupPageWide.tsx";
 export * from "./components/Card.tsx";
 export * from "./components/Checkbox.tsx";
+export * from "./components/Drawer.tsx";
 export * from "./components/Error.tsx";
 export * from "./components/HorizontalBar.tsx";
 export * from "./components/InputText.tsx";

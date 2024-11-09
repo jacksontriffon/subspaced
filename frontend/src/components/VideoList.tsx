@@ -4,15 +4,19 @@ import * as Framework from "../framework/index.ts";
 import { VideoDetails } from "common/api/video.js";
 import {
 	allVideos,
-	currentVideo,
 	setAllVideos,
 	setCurrentVideo,
 } from "../global/videoState.ts";
 
-export function VideoListSelect() {
-	const [currentVideoIndex, setCurrentVideoIndex] =
-		Solid.createSignal<number>(0);
-
+export function VideoListSelect({
+	onChange,
+	currentVideoIndex,
+	setCurrentVideoIndex,
+}: {
+	onChange: () => void;
+	currentVideoIndex: Solid.Accessor<number | null>;
+	setCurrentVideoIndex: Solid.Setter<number | null>;
+}) {
 	const [loading, setLoading] = Solid.createSignal<boolean>(true);
 	Solid.createEffect(() => {
 		Framework.getAllVideos()
@@ -48,7 +52,7 @@ export function VideoListSelect() {
 				</Center>
 			) : allVideos().length > 0 ? (
 				allVideos().map((video, index) => {
-					let isChecked = index === currentVideoIndex();
+					let checked = index === currentVideoIndex();
 					return (
 						<ListItem>
 							<RadioWrapper>
@@ -56,8 +60,8 @@ export function VideoListSelect() {
 									type="radio"
 									name="video-list"
 									value={index}
-									checked={isChecked}
-									onChange={() =>
+									checked={checked}
+									onChange={() => {
 										setCurrentVideoIndex((prevIndex) => {
 											const isNewSelection =
 												prevIndex !== index;
@@ -65,11 +69,14 @@ export function VideoListSelect() {
 												updateCurrentVideo(video);
 											}
 											return index;
-										})
-									}
+										});
+										onChange();
+									}}
 								/>
 								<Framework.VideoCover
-									isChecked={isChecked}
+									visible={
+										checked || currentVideoIndex() === null
+									}
 									src={video.cover}
 									alt={video.name}
 								/>
@@ -100,7 +107,7 @@ const ListContainer = styled.ul`
 	padding: 0px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: 6px;
 	justify-content: center;
 `;
 
