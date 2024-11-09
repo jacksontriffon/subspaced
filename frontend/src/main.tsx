@@ -139,12 +139,3 @@ function Root() {
 		</>
 	);
 }
-
-export function PageHelloWorld() {
-	return (
-		<>
-			<h2>Lorenzi's Jisho</h2>
-			<Framework.Link href="/test">Test Page</Framework.Link>
-		</>
-	);
-}

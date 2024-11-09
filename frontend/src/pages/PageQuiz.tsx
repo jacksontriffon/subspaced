@@ -12,7 +12,7 @@ export function PageQuiz(props: Framework.RouteProps) {
 			<MarginBottom />
 			<VideoPlayer max_clips={1} show_subtitles={true} />
 			<MarginBottom />
-			<NextButton />
+			{/* <NextButton /> */}
 			<Quiz />
 		</Page>
 	);

@@ -36,7 +36,7 @@ const DivLayout = styled.div`
 
 	display: grid;
 	grid-template: auto 1fr / 1fr auto 1fr;
-	background-color: ${Framework.themeVar("voidBkgColor")};
+	background: ${Framework.themeVar("voidBkgColor")};
 
 	overflow-x: hidden;
 
@@ -55,7 +55,7 @@ const DivContent = styled.div`
 
 	text-align: left;
 	color: ${Framework.themeVar("textColor")};
-	background-color: ${Framework.themeVar("pageBkgColor")};
+	background: ${Framework.themeVar("pageBkgColor")};
 
 	border-left: 1px solid ${Framework.themeVar("borderColor")};
 	border-right: 1px solid ${Framework.themeVar("borderColor")};
