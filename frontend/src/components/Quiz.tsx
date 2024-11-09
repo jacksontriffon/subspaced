@@ -1,8 +1,9 @@
 import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
-import { currentVideo, setCurrentVideo } from "../global/videoState.ts";
+import { currentVideo } from "../global/videoState.ts";
 import { ClipDetails } from "common/api/video.js";
+import { QuizChoice } from "./QuizChoice.tsx";
 
 const getCurrentClip = (): ClipDetails | null => {
 	return currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0] ?? null;
@@ -34,14 +35,6 @@ export function Quiz() {
 			})),
 		]);
 
-	const answeredCorrectly = allTranslations
-		.map((translation) =>
-			translation.text === choiceSelected()
-				? translation.isCorrect
-				: false,
-		)
-		.includes(true);
-
 	return (
 		<form>
 			<QuizContainer>
@@ -51,112 +44,38 @@ export function Quiz() {
 					</QuizTitle>
 					<Result
 						isCorrect={true}
-						visible={!!choiceSelected() && answeredCorrectly}
+						visible={
+							!!choiceSelected() &&
+							choiceSelected() === currentClip.translation
+						}
 					>
 						Success
 					</Result>
 					<Result
 						isCorrect={false}
-						visible={!!choiceSelected() && !answeredCorrectly}
+						visible={
+							!!choiceSelected() &&
+							!(choiceSelected() === currentClip.translation)
+						}
 					>
 						Failed.
 					</Result>
 				</div>
 
-				{allTranslations.map((translation, i) => {
+				{allTranslations.map((translation) => {
 					return (
-						<>
-							<input
-								type="checkbox"
-								hidden="hidden"
-								onChange={(e) => {
-									setChoiceSelected(e.target.value);
-								}}
-								id={translation.text}
-								name="translation"
-								value={translation.text}
-								disabled={!!choiceSelected()}
-							/>
-							<ChoiceLabel
-								correct={translation.isCorrect}
-								answered={!!choiceSelected()}
-								isSelected={
-									choiceSelected() === translation.text
-								}
-								for={translation.text}
-							>
-								{translation.text}
-							</ChoiceLabel>
-						</>
+						<QuizChoice
+							choiceSelected={choiceSelected}
+							setChoiceSelected={setChoiceSelected}
+							isCorrect={translation.isCorrect}
+							text={translation.text}
+						/>
 					);
 				})}
 			</QuizContainer>
 		</form>
 	);
 }
-
-const ChoiceLabel = styled.label<{
-	correct: boolean;
-	answered: boolean;
-	isSelected: boolean;
-}>`
-	transition: all 0.3s ease-in-out;
-	display: block;
-	min-width: 100%;
-	text-align: center;
-	padding: 10px;
-	border-radius: 4px;
-	border: ${(props) =>
-		!props.answered
-			? "1px solid #9b3ccc"
-			: props.correct
-			? "1px solid rgba(67, 245, 114, 1)"
-			: props.isSelected
-			? "1px solid rgba(239, 62, 33, 1)"
-			: "1px solid rgba(126, 126, 126, 1)"};
-	background: ${(props) =>
-		!props.answered
-			? "black"
-			: props.correct
-			? "black linear-gradient(230deg, rgba(67, 245, 114, 0), rgba(67, 245, 114, 0.2), rgba(67, 245, 114, 0))"
-			: props.isSelected
-			? "black linear-gradient(230deg, rgba(67, 245, 114, 0), rgba(239, 62, 33, 0.2), rgba(67, 245, 114, 0))"
-			: "black"};
-	opacity: ${(props) => (!props.answered || props.isSelected ? 1 : 0.5)};
-	background-size: 400% 400%;
-	cursor: ${(props) => (!props.answered ? "pointer" : "default")};
-	animation: ${(props) =>
-		props.isSelected
-			? "gradient 2s cubic-bezier(0.075, 0.82, 0.165, 1), scale 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);"
-			: ""};
-	font-size: 13px;
-	width: 100%;
-	:hover {
-		background: ${(props) =>
-			!props.answered
-				? "linear-gradient(230deg, rgba(67, 245, 114, 0), rgba(155, 60, 204, 0.2), rgba(67, 245, 114, 0))"
-				: "black"};
-	}
-	@keyframes gradient {
-		0% {
-			background-position: 0% 0%;
-		}
-		100% {
-			background-position: 100% 100%;
-		}
-	}
-	@keyframes scale {
-		0% {
-			scale: 1;
-		}
-		50% {
-			scale: 1.05;
-		}
-		100% {
-			scale: 1;
-		}
-	}
-`;
 
 const QuizContainer = styled.fieldset`
 	display: flex;
@@ -183,9 +102,13 @@ const Result = styled.p<{ isCorrect: boolean; visible: boolean }>`
 	width: 100%;
 	text-align: center;
 	font-size: 20px;
+	font-weight: 900;
 	color: ${(props) =>
 		props.isCorrect ? "rgba(60, 217, 104, 1)" : "rgba(239, 62, 33, 1)"};
-	filter: drop-shadow(0 0 8px rgba(239, 62, 33, 0.75));
+	filter: ${(props) =>
+		props.isCorrect
+			? "drop-shadow(0 0 8px rgba(60, 217, 104, 1))"
+			: "drop-shadow(0 0 8px rgba(239, 62, 33, 0.75))"};
 	opacity: ${(props) => (props.visible ? 1 : 0)};
 	top: -16px;
 	transition: all 0.15s ease-out;
