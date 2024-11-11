@@ -1,7 +1,6 @@
 import CorvuDrawer from "@corvu/drawer";
 import { styled } from "solid-styled-components";
 import * as Solid from "solid-js";
-import { themeSubspaced } from "framework/theme";
 
 export const Drawer = ({
 	open,

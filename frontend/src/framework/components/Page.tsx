@@ -21,7 +21,7 @@ export function Page(props: {
 				{/* <Framework.LogoHeader
                 sideMenuFn={ props.sideMenu }
             /> */}
-				<main>{props.children}</main>
+				{props.children}
 			</DivContent>
 		</DivLayout>
 	);
@@ -29,6 +29,10 @@ export function Page(props: {
 
 export const pageWidth = "55rem";
 export const pageSmallWidthThreshold = "60rem";
+
+const Main = styled.main`
+	/* min-height: 100dvh; */
+`;
 
 const DivLayout = styled.div`
 	width: 100vw;

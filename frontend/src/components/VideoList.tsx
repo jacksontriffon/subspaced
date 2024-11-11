@@ -1,14 +1,11 @@
 import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
-import { VideoDetails } from "common/api/video.js";
-import {
-	allVideos,
-	setAllVideos,
-	setCurrentVideo,
-} from "../global/videoState.ts";
+import { allVideos, setAllVideos } from "../global/videoState.ts";
+import { VideoCard } from "./VideoCard.tsx";
+import { useVideoCards } from "../hooks/useVideoCards.ts";
 
-export function VideoListSelect({
+export function VideoList({
 	onChange,
 	currentVideoIndex,
 	setCurrentVideoIndex,
@@ -30,65 +27,43 @@ export function VideoListSelect({
 			});
 	});
 
-	const updateCurrentVideo = (
-		newVideo: VideoDetails,
-		randomiseDefaultClipIndex: boolean = true,
-	) => {
-		if (randomiseDefaultClipIndex) {
-			setCurrentVideo({
-				...newVideo,
-				currentClipIndex: Framework.randomIndex(newVideo.clips),
-			});
-		} else {
-			setCurrentVideo(newVideo);
-		}
-	};
+	const cardWidth = 72;
+	const cardHeight = 110;
+	const gapX = 6;
+	const gapY = 6;
+
+	const { videoCards, containerRef } = useVideoCards({
+		cardWidth,
+		cardHeight,
+		gapX,
+		gapY,
+		debug: true,
+	});
 
 	return (
-		<ListContainer>
-			{loading() ? (
-				<Center>
-					<p>Loading...</p>
-				</Center>
-			) : allVideos().length > 0 ? (
-				allVideos().map((video, index) => {
+		<ListContainer ref={containerRef}>
+			{
+				// loading() ? (
+				// 	// <Center>
+				// 	// 	<p>Loading...</p>
+				// 	// </Center>
+				// 	<></>
+				// ) : (
+				videoCards().map((video, index) => {
 					let checked = index === currentVideoIndex();
 					return (
-						<ListItem>
-							<RadioWrapper>
-								<HiddenRadioInput
-									type="radio"
-									name="video-list"
-									value={index}
-									checked={checked}
-									onChange={() => {
-										setCurrentVideoIndex((prevIndex) => {
-											const isNewSelection =
-												prevIndex !== index;
-											if (isNewSelection) {
-												updateCurrentVideo(video);
-											}
-											return index;
-										});
-										onChange();
-									}}
-								/>
-								<Framework.VideoCover
-									visible={
-										checked || currentVideoIndex() === null
-									}
-									src={video.cover}
-									alt={video.name}
-								/>
-							</RadioWrapper>
-						</ListItem>
+						<VideoCard
+							checked={checked}
+							index={index}
+							currentVideoIndex={currentVideoIndex}
+							onChange={onChange}
+							setCurrentVideoIndex={setCurrentVideoIndex}
+							video={video}
+						/>
 					);
 				})
-			) : (
-				<Center>
-					<p>No videos found.</p>
-				</Center>
-			)}
+				// )
+			}
 		</ListContainer>
 	);
 }
@@ -104,26 +79,15 @@ const Center = styled.p`
 
 const ListContainer = styled.ul`
 	margin-top: 24px;
+	margin-bottom: 24px;
+	max-width: 1028px;
+	min-width: 200px;
+	height: 99%;
 	padding: 0px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 6px;
+	row-gap: 6px;
+	column-gap: 6px;
 	justify-content: center;
-`;
-
-const ListItem = styled.li`
-	display: flex;
-	gap: 16px;
-	align-items: center;
-`;
-
-const RadioWrapper = styled.label`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	cursor: pointer;
-`;
-
-const HiddenRadioInput = styled.input`
-	display: none;
+	align-items: flex-start;
 `;
