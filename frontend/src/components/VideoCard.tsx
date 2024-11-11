@@ -11,6 +11,7 @@ export function VideoCard({
 	index,
 	currentVideoIndex,
 	setCurrentVideoIndex,
+	loading,
 }: {
 	onChange: () => void;
 	video: VideoDetails | null;
@@ -18,6 +19,7 @@ export function VideoCard({
 	index: number;
 	currentVideoIndex: Solid.Accessor<number | null>;
 	setCurrentVideoIndex: Solid.Setter<number | null>;
+	loading: Solid.Accessor<boolean>;
 }) {
 	const updateCurrentVideo = (
 		newVideo: VideoDetails,
@@ -63,25 +65,10 @@ export function VideoCard({
 				<DefaultCard>?</DefaultCard>
 			)}
 		</>
-		// <ListItem>
-		// </ListItem>
 	);
 }
 
-const ListItem = styled.li`
-	width: 72px;
-	height: 110px;
-	/* display: flex; */
-	/* gap: 16px; */
-	/* flex: 0 0 auto; */
-	/* align-items: center; */
-	text-decoration: none;
-`;
-
 const RadioWrapper = styled.label`
-	/* display: flex; */
-	/* flex-direction: column; */
-	/* align-items: center; */
 	cursor: pointer;
 	width: 72px;
 	height: 110px;

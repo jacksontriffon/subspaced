@@ -37,45 +37,27 @@ export function VideoList({
 		cardHeight,
 		gapX,
 		gapY,
-		debug: true,
 	});
 
 	return (
 		<ListContainer ref={containerRef}>
-			{
-				// loading() ? (
-				// 	// <Center>
-				// 	// 	<p>Loading...</p>
-				// 	// </Center>
-				// 	<></>
-				// ) : (
-				videoCards().map((video, index) => {
-					let checked = index === currentVideoIndex();
-					return (
-						<VideoCard
-							checked={checked}
-							index={index}
-							currentVideoIndex={currentVideoIndex}
-							onChange={onChange}
-							setCurrentVideoIndex={setCurrentVideoIndex}
-							video={video}
-						/>
-					);
-				})
-				// )
-			}
+			{videoCards().map((video, index) => {
+				let checked = index === currentVideoIndex();
+				return (
+					<VideoCard
+						checked={checked}
+						index={index}
+						currentVideoIndex={currentVideoIndex}
+						onChange={onChange}
+						setCurrentVideoIndex={setCurrentVideoIndex}
+						video={video}
+						loading={loading}
+					/>
+				);
+			})}
 		</ListContainer>
 	);
 }
-
-const Center = styled.p`
-	position: relative;
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
 
 const ListContainer = styled.ul`
 	margin-top: 24px;
