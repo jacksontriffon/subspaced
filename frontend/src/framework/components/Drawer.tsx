@@ -1,7 +1,7 @@
 import CorvuDrawer from "@corvu/drawer";
 import { styled } from "solid-styled-components";
 import * as Solid from "solid-js";
-import { VideoPlayer } from "../../components/VideoPlayer";
+import { themeSubspaced } from "framework/theme";
 
 export const Drawer = ({
 	open,
@@ -11,19 +11,18 @@ export const Drawer = ({
 	open: Solid.Accessor<boolean>;
 	setOpen: Solid.Setter<boolean>;
 } & Solid.ComponentProps<"div">) => {
+	const { children, ...restOfDivProps } = divProps;
 	return (
-		<StyledDrawer
-			open={open()}
-			onOpenChange={setOpen}
-			snapPoints={[0.25, 1]}
-		>
+		<StyledDrawer open={open()} onOpenChange={setOpen} snapPoints={[0, 1]}>
 			<>
 				<CorvuDrawer.Portal>
-					{/* <CorvuDrawer.Overlay /> */}
 					<StyledDrawerContent>
-						<DrawerContentContainer
-							{...divProps}
-						></DrawerContentContainer>
+						<DrawerContentContainer {...restOfDivProps}>
+							<>
+								<DrawerNotch />
+								{children}
+							</>
+						</DrawerContentContainer>
 					</StyledDrawerContent>
 				</CorvuDrawer.Portal>
 			</>
@@ -83,14 +82,14 @@ const StyledDrawerContent = styled(CorvuDrawer.Content)`
 	z-index: 50;
 	display: flex;
 	height: 100%;
-	max-height: 500px;
+	max-height: 340px;
 	flex-direction: column;
 	border-top-left-radius: 28px;
 	border-top-right-radius: 28px;
 	border-top-width: 2px;
 	border-color: rgba(128, 128, 128, 0.8);
-	background-color: rgba(0, 0, 0, 0.3);
-	backdrop-filter: blur(20px);
+	background: linear-gradient(rgba(24, 45, 56, 0.3), rgba(3, 18, 27, 0.3));
+	backdrop-filter: blur(16px);
 	filter: drop-shadow(0 -5px 16px rgba(73, 73, 73, 0.75));
 	padding-top: 0.75rem;
 	outline: none;
@@ -136,4 +135,18 @@ const StyledDrawerContent = styled(CorvuDrawer.Content)`
 const DrawerContentContainer = styled.div`
 	padding-left: 24px;
 	padding-right: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+`;
+
+const DrawerNotch = styled.div`
+	background-color: #929292;
+	opacity: 0.5;
+	border-radius: 8px;
+	width: 20%;
+	height: 6px;
+	margin-bottom: 16px;
+	margin-left: auto;
+	margin-right: auto;
 `;

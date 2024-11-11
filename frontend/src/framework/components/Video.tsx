@@ -15,13 +15,9 @@ export function Video(
 	);
 }
 
-const VideoContainer = styled.div`
-	border-color: 2px solid white;
-	aspect-ratio: 16 / 9;
-`;
-
 const StyledVideo = styled.video`
 	border-color: 2px solid white;
 	aspect-ratio: 16 / 9;
 	width: 100%;
+	border-radius: 4px;
 `;

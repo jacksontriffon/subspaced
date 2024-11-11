@@ -152,8 +152,8 @@ export const themeSubspaced: Theme = {
 	scheme: "light dark",
 
 	themeColor: "#202122",
-	voidBkgColor: "linear-gradient(rgba(0, 23, 36, 1), rgba(26, 32, 35, 1));",
-	pageBkgColor: "linear-gradient(rgba(0, 23, 36, 1), rgba(26, 32, 35, 1));",
+	voidBkgColor: "linear-gradient(rgba(0, 23, 36, 1), #172d38);",
+	pageBkgColor: "linear-gradient(#182d38, rgba(0, 23, 36, 1) );",
 
 	pageTransitionOverlayColor: "#20212288",
 	borderColor: "#616671",
