@@ -10,7 +10,7 @@ export * from "./signal.ts";
 export * from "./test.tsx";
 export * from "./theme.tsx";
 export * from "./utils.ts";
-export * from "./videoUtils.ts";
+export * from "../utils/videoUtils.ts";
 export * from "./jsonUtils.ts";
 export * from "./components/Button.tsx";
 export * from "./components/ButtonFloating.tsx";

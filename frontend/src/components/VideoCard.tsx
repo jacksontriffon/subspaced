@@ -23,7 +23,7 @@ export function VideoCard({
 }) {
 	const updateCurrentVideo = (
 		newVideo: VideoDetails,
-		randomiseDefaultClipIndex: boolean = true,
+		randomiseDefaultClipIndex: boolean = false,
 	) => {
 		if (randomiseDefaultClipIndex) {
 			setCurrentVideo({

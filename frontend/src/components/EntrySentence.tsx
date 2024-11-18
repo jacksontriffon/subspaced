@@ -53,6 +53,7 @@ export function EntrySentence(props: {
 
 const Entry = styled.article`
 	margin-bottom: 0.5em;
+	text-align: center;
 `;
 
 const Background = styled.article`

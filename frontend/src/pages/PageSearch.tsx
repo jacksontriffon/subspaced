@@ -6,9 +6,9 @@ import { Page } from "../components/Page.tsx";
 import { EntryWord } from "../components/EntryWord.tsx";
 import { EntryKanji } from "../components/EntryKanji.tsx";
 import { EntrySentence } from "../components/EntrySentence.tsx";
-import { NextButton } from "../components/NextButton.tsx";
-import { QuizButton } from "../components/QuizButton.tsx";
+import { NextAndQuizButton } from "../components/NextAndQuizButton.tsx";
 import { VideoPlayer } from "../components/VideoPlayer.tsx";
+import { CloseButton } from "../components/CloseButton.tsx";
 
 const limitStart = 10;
 const limitIncrease = 20;
@@ -28,12 +28,10 @@ export function PageSearch(props: Framework.RouteProps) {
 
 	return (
 		<Page title={query()} searchQuery={query()}>
+			<CloseButton />
 			<MarginBottom />
-			<NextButton />
+			<NextAndQuizButton />
 			{/* <Searchbox initialText={query()} position="inline" /> */}
-			<MarginBottom />
-			<QuizButton />
-
 			<SearchResults query={query} tokenIndex={tokenIndex} />
 		</Page>
 	);

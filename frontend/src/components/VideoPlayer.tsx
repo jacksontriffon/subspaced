@@ -3,8 +3,11 @@ import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { currentVideo, setCurrentVideo } from "../global/videoState.ts";
 import { Subtitles } from "./Subtitles.tsx";
-
-export const [lastClipIndex, setLastClipIndex] = Solid.createSignal(1);
+import {
+	getCurrentClip,
+	incrementCurrentVideo,
+	setCurrentClipIndex,
+} from "../utils/clipUtils.ts";
 
 export function VideoPlayer(props: {
 	randomise_clips?: boolean;
@@ -20,16 +23,6 @@ export function VideoPlayer(props: {
 	} = props;
 	let videoRef: HTMLVideoElement | undefined;
 
-	const setClipIndex = (newClipIndex: number) => {
-		setCurrentVideo(
-			(prev) =>
-				prev && {
-					...prev,
-					currentClipIndex: newClipIndex,
-				},
-		);
-	};
-
 	const triggerNextVideo = () => {
 		if (randomise_clips) {
 			playRandomClip();
@@ -37,40 +30,38 @@ export function VideoPlayer(props: {
 			playNextClip();
 		}
 	};
+
 	const playNextClip = () => {
-		if (currentVideo()?.currentClipIndex === lastClipIndex()) {
-			setClipIndex(0);
+		if (
+			currentVideo()?.currentClipIndex ===
+			first_clip_index + (max_clips - 1)
+		) {
+			setCurrentClipIndex(first_clip_index);
 		} else {
-			setCurrentVideo(
-				(prev) =>
-					prev && {
-						...prev,
-						currentClipIndex: prev.currentClipIndex + 1,
-					},
-			);
+			incrementCurrentVideo();
 		}
 	};
 
 	const playRandomClip = () => {
-		let rand_index = Math.floor(Math.random() * lastClipIndex());
-		while (rand_index === lastClipIndex()) {
-			rand_index = Math.floor(Math.random() * lastClipIndex());
+		let rand_index = Math.floor(Math.random() * max_clips);
+		while (rand_index === max_clips) {
+			rand_index = Math.floor(Math.random() * max_clips);
 		}
-		setClipIndex(rand_index);
+		setCurrentClipIndex(first_clip_index + rand_index);
 	};
 
 	let currentPath = currentVideo()?.name;
+	const currentClipPath = () => getCurrentClip()?.videoPath ?? "";
+
 	// Load new video side effect
 	Solid.createEffect(() => {
 		// DON'T REMOVE: This unused variable triggers this Effect when it changes
-		const new_video_path =
-			currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0]
-				.videoPath;
+		const new_video_path = currentClipPath();
 
 		const isNewVideo = currentPath !== currentVideo()?.name;
 		if (isNewVideo) {
 			currentPath = currentVideo()?.name;
-			setClipIndex(first_clip_index);
+			setCurrentClipIndex(first_clip_index);
 		}
 
 		if (videoRef) {
@@ -83,11 +74,6 @@ export function VideoPlayer(props: {
 			});
 			videoRef.load();
 		}
-
-		const total_clips = currentVideo()?.clips.length ?? max_clips;
-		if (currentVideo()?.clips.length) {
-			setLastClipIndex(total_clips);
-		}
 	});
 
 	// TODO: Click anywhere to play overlay (before user interacts with the page)
@@ -97,11 +83,7 @@ export function VideoPlayer(props: {
 				<VideoPlayerContainer>
 					<Framework.Video
 						ref={videoRef}
-						src={
-							currentVideo()?.clips[
-								currentVideo()?.currentClipIndex ?? 0
-							].videoPath
-						}
+						src={currentClipPath()}
 						loop={max_clips === 1}
 						autoplay
 					/>

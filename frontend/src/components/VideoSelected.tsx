@@ -3,15 +3,24 @@ import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { currentVideo } from "../global/videoState.ts";
 import { VideoPlayer } from "./VideoPlayer.tsx";
+import { preferences } from "../global/preferencesState.ts";
+import {
+	indexOfFirstClipInChapter,
+	setCurrentClipIndex,
+} from "../utils/clipUtils.ts";
 
 export function VideoSelected() {
 	return (
 		<>
-			<VideoPlayer max_clips={5} />
+			<VideoPlayer
+				max_clips={preferences().clipsPerChapter}
+				first_clip_index={indexOfFirstClipInChapter()}
+			/>
 			<StyledLink
+				onClick={() => setCurrentClipIndex(indexOfFirstClipInChapter())}
 				href={`search/${
-					currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0]
-						.subtitles
+					currentVideo()?.clips[indexOfFirstClipInChapter()]
+						.subtitles ?? ""
 				}`}
 			>
 				Begin Quiz

@@ -60,12 +60,9 @@ export function useContainerItems({
 			const resizeObserver = new ResizeObserver(() => calculateItems(el));
 			resizeObserver.observe(el);
 
-			// Cleanup the observer when the component is unmounted
 			onCleanup(() => resizeObserver.disconnect());
 		}
 	};
-
-	console.log(totalItems());
 
 	return {
 		totalItems,

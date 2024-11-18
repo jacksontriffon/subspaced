@@ -2,6 +2,7 @@ import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { setCurrentVideo } from "../global/videoState.ts";
+import { incrementCurrentVideo, isLastClipOfCurrentChapter } from "../utils/clipUtils.ts";
 
 interface QuizChoiceProps {
 	isCorrect: boolean;
@@ -10,22 +11,22 @@ interface QuizChoiceProps {
 	setChoiceSelected: Solid.Setter<string | null>;
 }
 
-const incrementCurrentVideo = () => {
-	setCurrentVideo(
-		(prev) =>
-			prev && {
-				...prev,
-				currentClipIndex: prev.currentClipIndex + 1,
-			},
-	);
-};
-
 export function QuizChoice({
 	isCorrect,
 	text,
 	choiceSelected,
 	setChoiceSelected,
 }: QuizChoiceProps) {
+	const isLastQuestion = () => isLastClipOfCurrentChapter()
+	
+	const goToNextQuizSection = () => {
+		if(isLastClipOfCurrentChapter()){
+			
+		}
+		incrementCurrentVideo();
+		window.location.reload();
+	};
+
 	return (
 		<>
 			<input
@@ -34,8 +35,7 @@ export function QuizChoice({
 				onChange={(e) => {
 					setChoiceSelected(e.target.value);
 					setTimeout(() => {
-						incrementCurrentVideo();
-						window.location.reload();
+						goToNextQuizSection();
 					}, 3000);
 				}}
 				id={text}

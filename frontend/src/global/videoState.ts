@@ -6,15 +6,17 @@ import * as Framework from "../framework/index.ts";
 const [allVideos, setAllVideos] = createSignal<VideoDetails[]>([]);
 const [currentVideo, setCurrentVideo] = createSignal<VideoDetails | null>(null);
 
+const localStorageKey = "currentVideo";
+
 const saveVideoState = () => {
 	Framework.LocalStorage.writeJson(
-		"currentVideo",
+		localStorageKey,
 		JSON.stringify(currentVideo()),
 	);
 };
 
 const loadCurrentVideoFromStorage = () => {
-	const savedJson = String(Framework.LocalStorage.readJson("currentVideo"));
+	const savedJson = String(Framework.LocalStorage.readJson(localStorageKey));
 	if (Framework.isJsonString(savedJson)) {
 		const savedVideo: VideoDetails = JSON.parse(savedJson);
 		setCurrentVideo(savedVideo);
@@ -22,7 +24,7 @@ const loadCurrentVideoFromStorage = () => {
 };
 
 const removeLoadedVideo = () => {
-	Framework.LocalStorage.remove("currentVideo");
+	Framework.LocalStorage.remove(localStorageKey);
 };
 
 export {
