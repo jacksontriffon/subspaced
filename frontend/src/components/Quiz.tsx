@@ -4,10 +4,8 @@ import * as Framework from "../framework/index.ts";
 import { currentVideo } from "../global/videoState.ts";
 import { ClipDetails } from "common/api/video.js";
 import { QuizChoice } from "./QuizChoice.tsx";
-
-const getCurrentClip = (): ClipDetails | null => {
-	return currentVideo()?.clips[currentVideo()?.currentClipIndex ?? 0] ?? null;
-};
+import { getCurrentClip } from "../utils/clipUtils.ts";
+import { ProgressBar } from "./ProgressBar.tsx";
 
 function shuffleArray<T>(array: T[]): T[] {
 	const result = array.slice(); // Make a copy to avoid mutating the original array
@@ -22,7 +20,17 @@ export function Quiz() {
 	const [choiceSelected, setChoiceSelected] = Solid.createSignal<
 		null | string
 	>(null);
+	const [totalCorrectAnswers, setTotalCorrectAnswers] =
+		Solid.createSignal<number>(0);
+
 	const currentClip = getCurrentClip();
+	const totalQuestions = () =>
+		(currentClip?.questions && currentClip.questions.length) ?? 0;
+	const progress = () =>
+		totalQuestions() > 0
+			? (totalCorrectAnswers() / totalQuestions()) * 100
+			: 0;
+
 	if (!currentClip) {
 		return <p>Clip not found</p>;
 	}
@@ -69,10 +77,13 @@ export function Quiz() {
 							setChoiceSelected={setChoiceSelected}
 							isCorrect={translation.isCorrect}
 							text={translation.text}
+							onClick={() => {}}
 						/>
 					);
 				})}
 			</QuizContainer>
+
+			<ProgressBar percentage={progress()} />
 		</form>
 	);
 }

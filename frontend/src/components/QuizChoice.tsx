@@ -2,9 +2,12 @@ import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
 import { setCurrentVideo } from "../global/videoState.ts";
-import { incrementCurrentVideo, isLastClipOfCurrentChapter } from "../utils/clipUtils.ts";
+import {
+	incrementCurrentVideo,
+	isLastClipOfCurrentChapter,
+} from "../utils/clipUtils.ts";
 
-interface QuizChoiceProps {
+interface QuizChoiceProps extends Solid.ComponentProps<"label"> {
 	isCorrect: boolean;
 	text: string;
 	choiceSelected: Solid.Accessor<string | null>;
@@ -16,12 +19,12 @@ export function QuizChoice({
 	text,
 	choiceSelected,
 	setChoiceSelected,
+	...labelProps
 }: QuizChoiceProps) {
-	const isLastQuestion = () => isLastClipOfCurrentChapter()
-	
-	const goToNextQuizSection = () => {
-		if(isLastClipOfCurrentChapter()){
-			
+	const isLastQuestion = () => isLastClipOfCurrentChapter();
+
+	const goToNextQuestion = () => {
+		if (isLastClipOfCurrentChapter()) {
 		}
 		incrementCurrentVideo();
 		window.location.reload();
@@ -35,7 +38,7 @@ export function QuizChoice({
 				onChange={(e) => {
 					setChoiceSelected(e.target.value);
 					setTimeout(() => {
-						goToNextQuizSection();
+						goToNextQuestion();
 					}, 3000);
 				}}
 				id={text}
@@ -48,6 +51,7 @@ export function QuizChoice({
 				answered={!!choiceSelected()}
 				isSelected={choiceSelected() === text}
 				for={text}
+				{...labelProps}
 			>
 				{text}
 			</ChoiceLabel>

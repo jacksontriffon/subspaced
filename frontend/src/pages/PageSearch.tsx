@@ -9,6 +9,7 @@ import { EntrySentence } from "../components/EntrySentence.tsx";
 import { NextAndQuizButton } from "../components/NextAndQuizButton.tsx";
 import { VideoPlayer } from "../components/VideoPlayer.tsx";
 import { CloseButton } from "../components/CloseButton.tsx";
+import { BackButton } from "../components/BackButton.tsx";
 
 const limitStart = 10;
 const limitIncrease = 20;
@@ -30,7 +31,7 @@ export function PageSearch(props: Framework.RouteProps) {
 		<Page title={query()} searchQuery={query()}>
 			<CloseButton />
 			<MarginBottom />
-			<NextAndQuizButton />
+
 			{/* <Searchbox initialText={query()} position="inline" /> */}
 			<SearchResults query={query} tokenIndex={tokenIndex} />
 		</Page>
@@ -84,6 +85,9 @@ function SearchResults(props: {
 		setLimit(limit() + limitIncrease);
 	};
 
+	const queryType = () => searchResults()?.query.type;
+	console.log("query >>> ", queryType());
+
 	return (
 		<>
 			<Solid.Show when={searchResults.loading}>
@@ -91,6 +95,11 @@ function SearchResults(props: {
 			</Solid.Show>
 
 			<Results inert={searchResults.loading ? true : undefined}>
+				{queryType() !== "any" && queryType() !== "sentence" ? (
+					<BackButton />
+				) : (
+					<NextAndQuizButton />
+				)}
 				<Solid.For
 					each={
 						queryToken() === ""
@@ -118,7 +127,6 @@ function SearchResults(props: {
 									max_clips={1}
 									show_subtitles={false}
 								/>
-
 								<EntrySentence
 									entry={
 										result as App.Api.Search.SentenceAnalysis

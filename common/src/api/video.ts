@@ -12,4 +12,15 @@ export interface ClipDetails {
 	subtitles: string;
 	translation: string;
 	incorrect_translations: string[];
+	questions: Question[]
+}
+
+export interface Question {
+	question: string;
+	choices: Choice[];
+}
+
+export interface Choice {
+	text: string;
+	isCorrect: boolean;
 }
