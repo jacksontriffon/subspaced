@@ -4,6 +4,7 @@ import * as Framework from "../framework/index.ts";
 import { allVideos, setAllVideos } from "../global/videoState.ts";
 import { VideoCard } from "./VideoCard.tsx";
 import { useVideoCards } from "../hooks/useVideoCards.ts";
+import anime from "animejs";
 
 export function VideoList({
 	onChange,
@@ -32,16 +33,64 @@ export function VideoList({
 	const gapX = 6;
 	const gapY = 6;
 
-	const { videoCards, containerRef } = useVideoCards({
-		cardWidth,
-		cardHeight,
-		gapX,
-		gapY,
+	const { videoCards, containerRef, cardsPerColumn, cardsPerRow } =
+		useVideoCards({
+			cardWidth,
+			cardHeight,
+			gapX,
+			gapY,
+		});
+
+	const emptyVideoCards = () => videoCards().map(() => null);
+
+	const [visibleCards, setVisibleCards] = Solid.createSignal(videoCards());
+
+	Solid.createEffect(() => {
+		if (loading()) {
+			setVisibleCards(emptyVideoCards());
+		} else {
+			// Transition cards animation
+			setTimeout(() => {
+				anime({
+					targets: ".card",
+					scale: [1, 0],
+					delay: anime.stagger(50, {
+						grid: [cardsPerRow(), cardsPerColumn()],
+						from: "center",
+					}),
+				});
+				setTimeout(() => {
+					setVisibleCards(videoCards());
+					anime({
+						targets: ".card",
+						scale: [0, 1],
+						delay: anime.stagger(50, {
+							grid: [cardsPerRow(), cardsPerColumn()],
+							from: "center",
+						}),
+						duration: 1000,
+					});
+				}, 1000);
+			}, 10);
+		}
 	});
+
+	// Solid.onMount(() => {
+	// 	setTimeout(() => {
+	// 		anime({
+	// 			targets: ".card",
+	// 			scale: [0, 1],
+	// 			delay: anime.stagger(200, {
+	// 				grid: [cardsPerRow(), cardsPerColumn()],
+	// 				from: "first",
+	// 			}),
+	// 		});
+	// 	}, 10);
+	// });
 
 	return (
 		<ListContainer ref={containerRef}>
-			{videoCards().map((video, index) => {
+			{visibleCards().map((video, index) => {
 				let checked = index === currentVideoIndex();
 				return (
 					<VideoCard

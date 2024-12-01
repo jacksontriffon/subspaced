@@ -16,13 +16,14 @@ export function useVideoCards({
 	gapY?: number;
 	debug?: boolean;
 }) {
-	const { totalItems, containerRef } = useContainerItems({
-		itemWidth: cardWidth,
-		itemHeight: cardHeight,
-		gapX,
-		gapY,
-		debug,
-	});
+	const { totalItems, containerRef, itemsPerColumn, itemsPerRow } =
+		useContainerItems({
+			itemWidth: cardWidth,
+			itemHeight: cardHeight,
+			gapX,
+			gapY,
+			debug,
+		});
 
 	const [videoCards, setVideoCards] = Solid.createSignal<
 		(VideoDetails | null)[]
@@ -47,8 +48,13 @@ export function useVideoCards({
 		}
 	});
 
+	const cardsPerRow = () => itemsPerRow();
+	const cardsPerColumn = () => itemsPerColumn();
+
 	return {
 		videoCards,
 		containerRef,
+		cardsPerColumn,
+		cardsPerRow,
 	};
 }

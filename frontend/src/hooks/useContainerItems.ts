@@ -11,6 +11,8 @@ interface UseContainerItemsProps {
 
 interface UseContainerItemsResult {
 	totalItems: Accessor<number>;
+	itemsPerRow: Accessor<number>;
+	itemsPerColumn: Accessor<number>;
 	containerRef: (el: HTMLElement | null) => void;
 }
 
@@ -22,6 +24,8 @@ export function useContainerItems({
 	debug = false,
 }: UseContainerItemsProps): UseContainerItemsResult {
 	const [totalItems, setTotalItems] = createSignal(0);
+	const [itemsPerRow, setItemsPerRow] = createSignal(0);
+	const [itemsPerColumn, setItemsPerColumn] = createSignal(0);
 
 	const calculateItems = (container: HTMLElement | null) => {
 		if (container) {
@@ -32,14 +36,14 @@ export function useContainerItems({
 			const effectiveItemWidth = itemWidth + gapX;
 			const effectiveItemHeight = itemHeight + gapY;
 
-			const itemsPerRow = Math.floor(
-				(containerWidth + gapX) / effectiveItemWidth,
+			setItemsPerRow(
+				Math.floor((containerWidth + gapX) / effectiveItemWidth),
 			);
-			const itemsPerColumn = Math.floor(
-				(containerHeight + gapY) / effectiveItemHeight,
+			setItemsPerColumn(
+				Math.floor((containerHeight + gapY) / effectiveItemHeight),
 			);
 
-			setTotalItems(itemsPerRow * itemsPerColumn);
+			setTotalItems(itemsPerRow() * itemsPerColumn());
 
 			if (debug) {
 				console.log("Calculating... \n\n");
@@ -67,5 +71,7 @@ export function useContainerItems({
 	return {
 		totalItems,
 		containerRef,
+		itemsPerRow,
+		itemsPerColumn,
 	};
 }

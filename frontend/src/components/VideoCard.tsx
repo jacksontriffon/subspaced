@@ -36,7 +36,7 @@ export function VideoCard({
 	};
 
 	return (
-		<>
+		<div class="card">
 			{video !== null ? (
 				<RadioWrapper>
 					<HiddenRadioInput
@@ -64,7 +64,7 @@ export function VideoCard({
 			) : (
 				<DefaultCard>?</DefaultCard>
 			)}
-		</>
+		</div>
 	);
 }
 
