@@ -34,6 +34,19 @@ export const setCurrentClipIndex = (index: number) => {
 	);
 };
 
+export const setCurrentChapter = (chapter: number) => {
+	setCurrentVideo(
+		(prev) =>
+			prev && {
+				...prev,
+				currentClipIndex:
+					chapter * preferences().clipsPerChapter -
+					preferences().clipsPerChapter,
+				currentChapter: chapter,
+			},
+	);
+};
+
 export const incrementCurrentVideo = () => {
 	setCurrentVideo(
 		(prev) =>

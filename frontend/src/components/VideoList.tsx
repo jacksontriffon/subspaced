@@ -1,7 +1,7 @@
 import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../framework/index.ts";
-import { allVideos, setAllVideos } from "../global/videoState.ts";
+import { setAllVideos } from "../global/videoState.ts";
 import { VideoCard } from "./VideoCard.tsx";
 import { useVideoCards } from "../hooks/useVideoCards.ts";
 import anime from "animejs";
@@ -45,66 +45,78 @@ export function VideoList({
 
 	const [visibleCards, setVisibleCards] = Solid.createSignal(videoCards());
 
+	const loadingAnimation = () =>
+		anime({
+			targets: ".card",
+			scale: () => {
+				const rand = Math.random();
+				return [1, rand];
+			},
+			rotate: () => {
+				const rand = Math.random();
+				return [0, rand * 10];
+			},
+			loop: true,
+			direction: "alternate",
+			easing: "linear",
+			duration: 10000,
+		});
+
+	const finishedLoadingAnimation = () =>
+		anime({
+			targets: ".card",
+			scale: [0, 1],
+			delay: anime.stagger(50, {
+				grid: [cardsPerRow(), cardsPerColumn()],
+				from: "center",
+			}),
+			duration: 1000,
+		});
+
 	Solid.createEffect(() => {
 		if (loading()) {
 			setVisibleCards(emptyVideoCards());
+			setTimeout(() => {
+				loadingAnimation();
+			}, 10);
 		} else {
 			// Transition cards animation
 			setTimeout(() => {
-				anime({
-					targets: ".card",
-					scale: [1, 0],
-					delay: anime.stagger(50, {
-						grid: [cardsPerRow(), cardsPerColumn()],
-						from: "center",
-					}),
-				});
-				setTimeout(() => {
-					setVisibleCards(videoCards());
-					anime({
-						targets: ".card",
-						scale: [0, 1],
-						delay: anime.stagger(50, {
-							grid: [cardsPerRow(), cardsPerColumn()],
-							from: "center",
-						}),
-						duration: 1000,
-					});
-				}, 1000);
+				setVisibleCards(videoCards());
+				finishedLoadingAnimation();
 			}, 10);
 		}
 	});
 
-	// Solid.onMount(() => {
-	// 	setTimeout(() => {
-	// 		anime({
-	// 			targets: ".card",
-	// 			scale: [0, 1],
-	// 			delay: anime.stagger(200, {
-	// 				grid: [cardsPerRow(), cardsPerColumn()],
-	// 				from: "first",
-	// 			}),
-	// 		});
-	// 	}, 10);
-	// });
-
 	return (
-		<ListContainer ref={containerRef}>
-			{visibleCards().map((video, index) => {
-				let checked = index === currentVideoIndex();
-				return (
-					<VideoCard
-						checked={checked}
-						index={index}
-						currentVideoIndex={currentVideoIndex}
-						onChange={onChange}
-						setCurrentVideoIndex={setCurrentVideoIndex}
-						video={video}
-						loading={loading}
-					/>
-				);
-			})}
-		</ListContainer>
+		<>
+			<ListContainer ref={containerRef}>
+				{visibleCards().map((video, index) => {
+					let checked = index === currentVideoIndex();
+					return (
+						<VideoCard
+							checked={checked}
+							index={index}
+							currentVideoIndex={currentVideoIndex}
+							onChange={() => {
+								anime({
+									targets: ".card",
+									scale: [0.5, 1],
+									delay: anime.stagger(100, {
+										grid: [cardsPerRow(), cardsPerColumn()],
+										from: index,
+									}),
+								});
+								onChange();
+							}}
+							setCurrentVideoIndex={setCurrentVideoIndex}
+							video={video}
+							loading={loading}
+						/>
+					);
+				})}
+			</ListContainer>
+		</>
 	);
 }
 

@@ -78,7 +78,7 @@ const HiddenRadioInput = styled.input`
 	display: none;
 `;
 
-const DefaultCard = styled.div`
+export const DefaultCard = styled.div`
 	width: 72px;
 	height: 110px;
 	border-radius: 4px;

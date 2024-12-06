@@ -130,6 +130,12 @@ function Root() {
 					},
 
 					{
+						patterns: [Pages.Watch.url],
+						load: async () =>
+							(await import("./pages/PageWatch.tsx")).PageWatch,
+					},
+
+					{
 						patterns: ["*"],
 						load: async () => () =>
 							<Framework.Error message="Page not found" />,

@@ -12,6 +12,10 @@ export namespace Quiz {
 	export const url = `/quiz`;
 }
 
+export namespace Watch {
+	export const url = `/watch`;
+}
+
 export namespace Search {
 	export const matchQuery = "query";
 	export const matchToken = "token";

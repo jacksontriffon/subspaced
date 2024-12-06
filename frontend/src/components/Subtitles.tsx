@@ -17,7 +17,7 @@ const HeadingText = styled.span`
 	position: absolute;
 	bottom: 8px;
 	outline: 1px solid black;
-	background-color: rgba(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, 1);
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;

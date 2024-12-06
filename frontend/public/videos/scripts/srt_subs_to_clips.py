@@ -1,20 +1,7 @@
-# Important! [cd into the SCRIPTS folder]
-# Using this cmd prompt: python ./srt_subs_to_clips.py --input_folder ../videos/[FOLDER WITH MP4 AND SRT]/
-
-# Run this to analyse aswell: python ./srt_subs_to_clips.py --input_folder ../videos/[FOLDER WITH MP4 AND SRT]/ && analyse_clips.py --folder ../videos/[FOLDER WITH MP4 AND SRT]/
-
-
-# Quick outline of the procedure is as follows:
-# - Convert mp4 to webm
-# - Split subtitles and generate videos based on their timestamps (moviepy)
-# - Create Godot Resource file with subtitles field added
-
-
 import os
 import re
 import argparse
 import json
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 
@@ -40,7 +27,7 @@ def generate_clip(video_path, details, start_time, end_time, text, output_folder
     output_subfolder = os.path.join(output_folder, timestamp)
     os.makedirs(output_subfolder, exist_ok=True)
 
-    output_filename = f"{output_subfolder}/clip_{timestamp}.webm"
+    output_filename = f"{output_subfolder}/clip_{timestamp}.mp4"
     ffmpeg_extract_subclip(
         video_path, start_time_seconds, end_time_seconds, targetname=output_filename
     )
@@ -64,21 +51,13 @@ def create_clips(input_folder: str):
         with open(details_path, "r", encoding="utf-8") as details_json:
             details = json.load(details_json)
     else:
-        red_text_flag = '\033[31'
-        reset = '\033[0m'
-        print(red_text_flag + 'No Details Found' + reset)
+        print("\033[31mNo Details Found\033[0m")
 
     for file_name in os.listdir(input_folder):
         if file_name.endswith(".srt"):
             base_name = os.path.splitext(file_name)[0]
             subtitle_path = os.path.join(input_folder, file_name)
             video_path = os.path.join(input_folder, f"{base_name}.mp4")
-            webm_video_path = os.path.join(input_folder, f"{base_name}.webm")
-            if not os.path.exists(webm_video_path):
-                # Convert video to webm
-                video_from_mp4 = VideoFileClip(video_path)
-                video_from_mp4.write_videofile(webm_video_path, audio=False)
-            video_path = webm_video_path
 
             # Split videos
             if os.path.exists(video_path) and os.path.exists(subtitle_path):
@@ -113,13 +92,13 @@ def main():
         description="Create video clips based on subtitles."
     )
     parser.add_argument(
-        "--input_folder",
+        "--path",
         required=True,
-        help="Path to the folder containing both .ass and .mp4 files.",
+        help="Path to the folder containing both .srt and .mp4 files.",
     )
     args = parser.parse_args()
 
-    create_clips(args.input_folder)
+    create_clips(args.path)
 
 
 if __name__ == "__main__":

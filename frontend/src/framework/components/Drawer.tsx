@@ -12,7 +12,11 @@ export const Drawer = ({
 } & Solid.ComponentProps<"div">) => {
 	const { children, ...restOfDivProps } = divProps;
 	return (
-		<StyledDrawer open={open()} onOpenChange={setOpen} snapPoints={[0, 1]}>
+		<StyledDrawer
+			open={open()}
+			onOpenChange={setOpen}
+			snapPoints={[1, 0.5, 0]}
+		>
 			<>
 				<CorvuDrawer.Portal>
 					<StyledDrawerContent>
@@ -81,7 +85,8 @@ const StyledDrawerContent = styled(CorvuDrawer.Content)`
 	z-index: 50;
 	display: flex;
 	height: 100%;
-	max-height: 340px;
+	max-height: 80vh;
+	overflow: scroll;
 	flex-direction: column;
 	border-top-left-radius: 28px;
 	border-top-right-radius: 28px;

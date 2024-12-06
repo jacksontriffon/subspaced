@@ -8,23 +8,19 @@ import {
 	indexOfFirstClipInChapter,
 	setCurrentClipIndex,
 } from "../utils/clipUtils.ts";
+import { VideoChapterList } from "./VideoChapterList.tsx";
 
 export function VideoSelected() {
 	return (
 		<>
-			<VideoPlayer
-				max_clips={preferences().clipsPerChapter}
-				first_clip_index={indexOfFirstClipInChapter()}
-			/>
+			<VideoPlayer use_current_chapter={true} muted={true} />
 			<StyledLink
 				onClick={() => setCurrentClipIndex(indexOfFirstClipInChapter())}
-				href={`search/${
-					currentVideo()?.clips[indexOfFirstClipInChapter()]
-						.subtitles ?? ""
-				}`}
+				href={`watch`}
 			>
-				Begin Quiz
+				Watch Chapter
 			</StyledLink>
+			<VideoChapterList />
 		</>
 	);
 }
@@ -48,4 +44,5 @@ const StyledLink = styled.a`
 	outline: none;
 	text-decoration: none;
 	color: #f1fdfe;
+	margin-bottom: 16px;
 `;

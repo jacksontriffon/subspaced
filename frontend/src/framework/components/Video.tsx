@@ -2,11 +2,11 @@ import * as Solid from "solid-js";
 import { styled } from "solid-styled-components";
 import * as Framework from "../index.ts";
 
-export function Video(
-	props: {
-		style?: Solid.JSX.CSSProperties;
-	} & Solid.ComponentProps<"video">,
-) {
+export interface VideoProps extends Solid.ComponentProps<"video"> {
+	style?: Solid.JSX.CSSProperties;
+}
+
+export function Video(props: VideoProps) {
 	const { style, ...videoProps } = props;
 	return (
 		<StyledVideo autoplay loop style={props.style} {...videoProps}>
