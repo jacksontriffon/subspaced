@@ -55,7 +55,6 @@ const MarginBottom = styled.div`
 
 const ContentContainer = styled.div`
 	display: flex;
-	z-index: 5;
 	justify-content: center;
 	align-items: center;
 	height: 100dvh;
