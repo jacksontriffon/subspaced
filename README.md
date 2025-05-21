@@ -4,9 +4,6 @@ Learn Japanese through subtitles, featuring a full dictionary using [JMdict](htt
 
 Upload any video and .srt (subtitles file) and we break down your video into clips to quiz you on Vocabulary, Meaning and Pronunciation.
 
-## License
-
-MIT License.
 
 ## Local Development
 
