@@ -6,7 +6,7 @@ Upload any video and .srt (subtitles file) and we break down your video into cli
 
 ## License
 
-I haven't chosen how to license this repository's code yet. Please only use it for personal reference.
+MIT License.
 
 ## Local Development
 
