@@ -4,9 +4,6 @@ Learn Japanese through subtitles, featuring a full dictionary using [JMdict](htt
 
 Upload any video and .srt (subtitles file) and we break down your video into clips to quiz you on Vocabulary, Meaning and Pronunciation.
 
-## License
-
-I haven't chosen how to license this repository's code yet. Please only use it for personal reference.
 
 ## Local Development
 
@@ -19,13 +16,6 @@ To start:
 To work on the codebase, execute in parallel:
 
 -   In `backend/`, execute `npm run dev` to start the server in watch mode. You can pass arguments to select between a few options for internal services. Remember to pass as `npm run dev -- --option`.
-
-    -   For the database service:
-        -   `--db-mongo` Use MongoDB. This is the default.
-        -   `--db-dummy` Use a dummy interface that returns empty results.
-    -   For the authentication service:
-        -   `--auth-dummy` Use a dummy service which lets you log in with any user ID. This is the default.
-        -   `--auth-lorenzi`, `--auth-lorenzi-dev` Use Lorenzi's closed-source auth server. You probably won't have access to it, so use the dummy service.
 
 -   In `frontend/`, execute `npm run dev` to build and pack the frontend JavaScript files in watch mode.
 
