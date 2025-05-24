@@ -132,6 +132,7 @@ const getClipDetails = async (
 		videoName: clipDetails.name,
 		videoPath: clipVideoPath,
 		translation: clipDetails.translation,
+		questions: clipDetails.questions,
 		incorrect_translations: clipDetails.incorrect_translations,
 	};
 };
